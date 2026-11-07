@@ -4,723 +4,1076 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NasokTeam — лаунчер, сервер и моды для Minecraft</title>
-<meta name="description" content="NasokTeam делает Nasok Launcher, Nasok Server, моды и плагины для Minecraft. Скачивай, следи за обновлениями в Telegram, заказывай плагины.">
-<meta name="theme-color" content="#BFE3F2">
+<meta name="description" content="NasokTeam делает Nasok Launcher, Nasok Server, Nasok Installer, моды и плагины для Minecraft.">
+<meta name="theme-color" content="#1B2242">
 <meta property="og:type" content="website">
 <meta property="og:title" content="NasokTeam">
 <meta property="og:description" content="Лаунчер, сервер на своём ПК, моды и плагины для Minecraft.">
 <meta property="og:url" content="https://daytepoigratvasphalt8-prog.github.io/nasokteam/">
 <meta property="og:image" content="https://daytepoigratvasphalt8-prog.github.io/nasokteam/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%236E4A2E'/%3E%3Crect width='16' height='5' fill='%235E9E36'/%3E%3Crect x='3' y='5' width='2' height='2' fill='%235E9E36'/%3E%3Crect x='10' y='5' width='2' height='1' fill='%235E9E36'/%3E%3Cpath fill='%23F4EFE6' d='M3 6h2v7H3zM5 7h1v2H5zM6 8h1v2H6zM7 9h1v2H7zM8 10h1v2H8zM9 11h1v1H9zM10 6h2v7h-2z'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%237A5233'/%3E%3Crect width='16' height='5' fill='%236DB43F'/%3E%3Crect x='3' y='5' width='2' height='2' fill='%236DB43F'/%3E%3Crect x='10' y='5' width='2' height='1' fill='%236DB43F'/%3E%3Cpath fill='%23F4EFE6' d='M3 6h2v7H3zM5 7h1v2H5zM6 8h1v2H6zM7 9h1v2H7zM8 10h1v2H8zM9 11h1v1H9zM10 6h2v7h-2z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --sky: #BFE3F2;
-  --sky-deep: #9FD2EA;
-  --grass: #5E9E36;
-  --grass-dark: #4A8229;
-  --dirt: #6E4A2E;
-  --stone: #5F6164;
-  --deepslate: #34353B;
-  --bedrock: #1D1C20;
+  --night-1: #2A3A6E;
+  --night-2: #1B2242;
+  --base: #171B30;
+  --base-2: #1C2139;
+  --panel: #242A48;
+  --panel-2: #2C3356;
+  --line: rgba(237, 234, 245, .12);
+  --text: #EDEAF5;
+  --muted: #AEB2CB;
+
+  --grass: #74C94E;
   --diamond: #5CE6DC;
-  --diamond-ink: #0E3431;
-  --paper: #F4EFE6;
-  --ink: #1F2A1A;
+  --gold: #F6C445;
+  --tnt: #F0544F;
+  --amethyst: #B58CFF;
+  --tg: #2AABEE;
 
-  --pixel: "Pixelify Sans", "Courier New", monospace;
-  --text: "Golos Text", "Segoe UI", system-ui, sans-serif;
+  --display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --body: "Golos Text", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
 
-  --step-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='32' shape-rendering='crispEdges'%3E%3Cpath d='M0 32V16h16V8h24v8h16v8h16V16h24V8h16v16h16v-8h16V8h16v24z'/%3E%3C/svg%3E");
-  --drip-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='32' shape-rendering='crispEdges'%3E%3Cpath d='M0 32V8h16v8h8V8h32v16h8V8h24v8h16V8h24v16h8v-8h8V8h16v24z'/%3E%3C/svg%3E");
-  --speckle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' shape-rendering='crispEdges'%3E%3Cg fill='%23000' fill-opacity='.08'%3E%3Crect x='4' y='8' width='8' height='4'/%3E%3Crect x='36' y='4' width='4' height='8'/%3E%3Crect x='20' y='28' width='8' height='8'/%3E%3Crect x='48' y='40' width='8' height='4'/%3E%3Crect x='8' y='52' width='4' height='4'/%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.03'%3E%3Crect x='28' y='16' width='4' height='4'/%3E%3Crect x='52' y='20' width='8' height='4'/%3E%3Crect x='12' y='36' width='4' height='8'/%3E%3Crect x='36' y='52' width='8' height='4'/%3E%3C/g%3E%3C/svg%3E");
+  --px: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' preserveAspectRatio='none' shape-rendering='crispEdges'%3E%3Cg fill='%23000' fill-opacity='.14'%3E%3Crect x='1' y='0' width='1' height='1'/%3E%3Crect x='5' y='1' width='2' height='1'/%3E%3Crect x='0' y='3' width='1' height='1'/%3E%3Crect x='3' y='4' width='1' height='2'/%3E%3Crect x='6' y='5' width='1' height='1'/%3E%3Crect x='1' y='7' width='2' height='1'/%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.10'%3E%3Crect x='3' y='1' width='1' height='1'/%3E%3Crect x='6' y='3' width='1' height='1'/%3E%3Crect x='1' y='5' width='1' height='1'/%3E%3Crect x='5' y='7' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E");
+  --ore: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' preserveAspectRatio='none' shape-rendering='crispEdges'%3E%3Cg fill='%235CE6DC'%3E%3Crect x='1' y='1' width='2' height='1'/%3E%3Crect x='5' y='2' width='1' height='2'/%3E%3Crect x='2' y='5' width='1' height='1'/%3E%3Crect x='5' y='6' width='2' height='1'/%3E%3C/g%3E%3C/svg%3E");
+  --rack: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' preserveAspectRatio='none' shape-rendering='crispEdges'%3E%3Crect width='8' height='8' fill='%232A2F40'/%3E%3Cg fill='%23171A25'%3E%3Crect x='1' y='1' width='6' height='1'/%3E%3Crect x='1' y='3' width='6' height='1'/%3E%3Crect x='1' y='5' width='6' height='1'/%3E%3C/g%3E%3Cg fill='%235CE6DC'%3E%3Crect x='6' y='1' width='1' height='1'/%3E%3Crect x='6' y='5' width='1' height='1'/%3E%3C/g%3E%3Crect x='6' y='3' width='1' height='1' fill='%2374C94E'/%3E%3C/svg%3E");
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
 
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 
 body {
   margin: 0;
-  font-family: var(--text);
+  font-family: var(--body);
   font-size: 18px;
   line-height: 1.55;
-  color: var(--paper);
-  background: var(--bedrock);
+  color: var(--text);
+  background: var(--base);
   -webkit-font-smoothing: antialiased;
 }
-
-img, svg { display: block; }
 a { color: inherit; }
+svg { display: block; }
+:focus-visible { outline: 3px solid var(--diamond); outline-offset: 3px; }
 
-:focus-visible {
-  outline: 3px solid var(--diamond);
-  outline-offset: 3px;
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
-
 .skip {
-  position: absolute;
-  left: 16px;
-  top: -60px;
-  z-index: 50;
-  padding: 10px 14px;
-  background: var(--ink);
-  color: var(--paper);
-  font-weight: 600;
+  position: absolute; left: 16px; top: -60px; z-index: 100;
+  padding: 10px 14px; background: var(--text); color: var(--base); font-weight: 600;
 }
-.skip:focus { top: 16px; }
+.skip:focus { top: 12px; }
 
-.wrap {
-  width: 100%;
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
+.wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 28px; }
 
-/* ---------- Layers (scroll = digging down) ---------- */
+/* ================= Header ================= */
 
-.layer { position: relative; }
-
-.layer-sky {
-  background: linear-gradient(var(--sky-deep), var(--sky) 70%);
-  color: var(--ink);
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(27, 34, 66, .78);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
 }
-.layer-dirt {
-  background: var(--dirt) var(--speckle);
-}
-.layer-stone {
-  background: var(--stone) var(--speckle);
-}
-.layer-deepslate {
-  background: var(--deepslate) var(--speckle);
-}
-.layer-bedrock {
-  background: var(--bedrock) var(--speckle);
-}
-
-.layer-body {
-  padding-top: clamp(56px, 8vw, 104px);
-  padding-bottom: clamp(56px, 8vw, 104px);
-}
-
-/* Stepped block edge between two layers: background = upper, ::after = lower */
-.edge {
-  position: relative;
-  height: 32px;
-  background: var(--from);
-}
-.edge::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--to);
-  -webkit-mask: var(--step-edge) repeat-x left bottom / 160px 32px;
-          mask: var(--step-edge) repeat-x left bottom / 160px 32px;
-}
-.edge-drip::after {
-  -webkit-mask-image: var(--drip-edge);
-          mask-image: var(--drip-edge);
-}
-.edge-shift::after {
-  -webkit-mask-position: 72px bottom;
-          mask-position: 72px bottom;
-}
-
-.edge-sky-grass { --from: var(--sky); --to: var(--grass); }
-.edge-grass-dirt { --from: var(--grass); --to: var(--dirt); }
-.edge-dirt-stone { --from: var(--dirt); --to: var(--stone); }
-.edge-stone-deep { --from: var(--stone); --to: var(--deepslate); }
-.edge-deep-bedrock { --from: var(--deepslate); --to: var(--bedrock); }
-
-/* ---------- Header / hero ---------- */
-
-.top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-.top-mark {
-  font-family: var(--pixel);
-  font-weight: 700;
-  font-size: 20px;
+.nav-in { display: flex; align-items: center; gap: 28px; height: 64px; }
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--display); font-weight: 700; font-size: 17px;
   text-decoration: none;
 }
-.top-nav {
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
+.logo svg { width: 28px; height: 28px; }
+.nav-links { display: flex; gap: 2px; margin-left: auto; }
+.nav-links a {
+  padding: 8px 12px; font-size: 15px; font-weight: 500;
+  text-decoration: none; color: var(--muted);
 }
-.top-nav::-webkit-scrollbar { display: none; }
-.top-nav a {
-  padding: 8px 12px;
-  font-weight: 500;
-  font-size: 16px;
-  text-decoration: none;
-  white-space: nowrap;
+.nav-links a:hover { color: var(--text); }
+.nav-tg {
+  padding: 9px 16px; background: var(--tg); color: #fff;
+  font-size: 15px; font-weight: 600; text-decoration: none;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .25);
 }
-.top-nav a:hover { background: rgba(31, 42, 26, .08); }
+.nav-tg:hover { background: #45B9F2; }
+
+/* ================= Hero ================= */
 
 .hero {
-  padding-top: clamp(48px, 9vw, 120px);
-  padding-bottom: clamp(56px, 8vw, 96px);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(var(--night-1), var(--night-2) 85%);
+}
+.stars {
+  position: absolute; left: 0; top: 0; width: 3px; height: 3px;
+  background: transparent;
+  box-shadow:
+    80px 60px #fff, 240px 140px rgba(255,255,255,.6), 410px 40px #fff, 530px 210px rgba(255,255,255,.5),
+    690px 90px #fff, 820px 30px rgba(255,255,255,.7), 960px 170px #fff, 1130px 70px rgba(255,255,255,.6),
+    1290px 150px #fff, 1420px 50px rgba(255,255,255,.5), 150px 300px rgba(255,255,255,.5), 360px 380px #fff,
+    620px 330px rgba(255,255,255,.4), 1060px 360px rgba(255,255,255,.6), 1360px 300px #fff, 1500px 220px rgba(255,255,255,.7),
+    40px 480px rgba(255,255,255,.4), 1240px 520px rgba(255,255,255,.4), 1460px 460px #fff, 900px 520px rgba(255,255,255,.35);
+}
+.moon {
+  position: absolute; top: 72px; right: 9%;
+  width: 56px; height: 56px;
+  background: #EEEAD0;
+  box-shadow: 0 0 60px 10px rgba(238, 234, 208, .18);
+}
+.moon::before, .moon::after { content: ""; position: absolute; background: #D6D1B4; }
+.moon::before { left: 10px; top: 14px; width: 14px; height: 14px; }
+.moon::after { right: 10px; bottom: 10px; width: 10px; height: 10px; }
+
+.hero-in {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  min-height: min(760px, calc(100vh - 64px));
+  padding-top: 56px;
+  padding-bottom: 120px;
 }
 .hero-title {
   margin: 0;
-  font-family: var(--pixel);
-  font-weight: 700;
-  font-size: clamp(64px, 15vw, 200px);
-  line-height: .9;
-  letter-spacing: -.01em;
-  color: var(--ink);
-  text-shadow: .06em .06em 0 rgba(31, 42, 26, .16);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(52px, 8.2vw, 120px);
+  line-height: .95;
+  letter-spacing: -.035em;
 }
-.hero-title span { display: inline-block; }
-
 .hero-lead {
-  max-width: 34ch;
-  margin: 28px 0 0;
-  font-size: clamp(20px, 2.3vw, 26px);
-  line-height: 1.4;
-  font-weight: 500;
+  max-width: 30ch;
+  margin: 24px 0 0;
+  font-size: clamp(19px, 2vw, 23px);
+  line-height: 1.45;
+  color: #D9DCEC;
 }
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 36px;
-}
-.hero-news {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 40px;
-  padding: 8px 14px 8px 8px;
-  background: rgba(255, 255, 255, .55);
-  font-size: 16px;
-  font-weight: 500;
-  text-decoration: none;
-}
-.hero-news:hover { background: rgba(255, 255, 255, .8); }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 
-/* Hero letters placed one by one, like blocks */
+
+/* ================= Voxel island ================= */
+
+.scene {
+  --s: 50px;
+  position: relative;
+  justify-self: center;
+  width: calc(var(--s) * 8);
+  height: calc(var(--s) * 9);
+}
+.scene::after {
+  content: "";
+  position: absolute; left: 22%; right: 22%; bottom: 2%;
+  height: 26px;
+  background: radial-gradient(closest-side, rgba(5, 8, 20, .55), transparent);
+}
+.bob {
+  position: absolute; left: 50%; top: 44%;
+  transform-style: preserve-3d;
+}
+.world {
+  transform-style: preserve-3d;
+  transform: rotateX(-30deg) rotateY(45deg);
+}
+.cube {
+  position: absolute;
+  left: calc(var(--s) / -2); top: calc(var(--s) / -2);
+  width: var(--s); height: var(--s);
+  transform-style: preserve-3d;
+  transform: translate3d(calc(var(--x) * var(--s)), calc(var(--y) * var(--s) * -1), calc(var(--z) * var(--s)));
+}
+.f {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  background-size: 100% 100%;
+}
+.f-top   { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); }
+.f-front { transform: translateZ(calc(var(--s) / 2)); }
+.f-back  { transform: rotateY(180deg) translateZ(calc(var(--s) / 2)); }
+.f-right { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); }
+.f-left  { transform: rotateY(-90deg) translateZ(calc(var(--s) / 2)); }
+.f-front, .f-left { box-shadow: inset 0 0 0 999px rgba(0, 0, 0, .14); }
+.f-right, .f-back { box-shadow: inset 0 0 0 999px rgba(0, 0, 0, .32); }
+
+.t-grass.f-top { background: var(--px), #6DB43F; }
+.t-grass { background: linear-gradient(#6DB43F 0 22%, transparent 22%), linear-gradient(90deg, transparent 0 25%, #6DB43F 25% 37.5%, transparent 37.5% 62.5%, #6DB43F 62.5% 75%, transparent 75%) 0 0 / 100% 34% no-repeat, var(--px), #7A5233; }
+.t-dirt { background: var(--px), #7A5233; }
+.t-stone { background: var(--px), #8A8D95; }
+.t-ore { background: var(--ore), var(--px), #8A8D95; }
+.t-log { background: var(--px), repeating-linear-gradient(90deg, #6E4C2C 0 12.5%, #5A3D22 12.5% 25%); }
+.t-log.f-top { background: #A9824F; box-shadow: inset 0 0 0 calc(var(--s) / 8) #6E4C2C, inset 0 0 0 calc(var(--s) / 4) #A9824F, inset 0 0 0 calc(var(--s) * .375) #8A6638; }
+.t-leaves { background: var(--px), #3F8F35; }
+.t-tnt { background: linear-gradient(transparent 34%, #EFE9DF 34% 66%, transparent 66%), var(--px), #D9443F; }
+.t-tnt.f-top { background: linear-gradient(#3A2626, #3A2626) center / 25% 25% no-repeat, var(--px), #D9443F; }
+.t-server { background: var(--rack); }
+.t-server.f-top { background: var(--px), #343A4F; }
+
 @media (prefers-reduced-motion: no-preference) {
-  .hero-title span {
-    animation: place .32s steps(3, end) both;
-    animation-delay: calc(var(--i) * 70ms + 120ms);
+  .world { animation: spin 56s linear infinite; }
+  .bob { animation: bob 6s ease-in-out infinite; }
+  @keyframes spin {
+    from { transform: rotateX(-30deg) rotateY(45deg); }
+    to   { transform: rotateX(-30deg) rotateY(405deg); }
   }
-  @keyframes place {
-    from { transform: translateY(-.35em); opacity: 0; }
-    to   { transform: none; opacity: 1; }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
 }
 
-/* ---------- Shared bits ---------- */
+/* ================= Buttons, chips ================= */
 
 .btn {
-  display: inline-flex;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 12px 22px 14px;
+  font-family: var(--body); font-size: 17px; font-weight: 600; line-height: 1.2;
+  text-decoration: none; border: 0; cursor: pointer;
+  color: #10131F; background: var(--accent, var(--text));
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), inset 0 -4px 0 rgba(0, 0, 0, .28);
+}
+.btn:hover { filter: brightness(1.08); }
+.btn:active { box-shadow: inset 0 4px 0 rgba(0, 0, 0, .28); padding-top: 14px; padding-bottom: 12px; }
+.btn-ghost {
+  background: transparent; color: var(--text);
+  box-shadow: inset 0 0 0 2px rgba(237, 234, 245, .4);
+}
+.btn-ghost:hover { box-shadow: inset 0 0 0 2px var(--text); filter: none; }
+.btn-ghost:active { box-shadow: inset 0 0 0 2px var(--text); }
+
+.chip {
+  display: inline-block; padding: 4px 10px 5px;
+  font-size: 14px; font-weight: 600; line-height: 1.2; white-space: nowrap;
+}
+.chip-live { background: var(--accent); color: #10131F; }
+.chip-dev { box-shadow: inset 0 0 0 2px var(--accent); color: var(--accent); }
+
+/* ================= Product sections ================= */
+
+.product { position: relative; padding: clamp(80px, 10vw, 136px) 0; }
+.product-alt { background: var(--base-2); }
+
+.product-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px 80px;
   align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 12px 22px 14px;
-  font-family: var(--text);
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.2;
-  text-decoration: none;
-  border: 0;
+}
+.product-grid-flip > :first-child { order: 2; }
+
+.p-head { display: flex; align-items: center; gap: 16px; }
+.p-icon { width: 56px; height: 56px; flex: none; }
+.p-title {
+  margin: 0;
+  font-family: var(--display); font-weight: 700;
+  font-size: clamp(34px, 4.6vw, 58px);
+  line-height: 1.02; letter-spacing: -.02em;
+}
+.p-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.p-lead { max-width: 34ch; margin: 22px 0 0; font-size: clamp(19px, 1.9vw, 22px); line-height: 1.45; }
+
+.feats {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 22px 28px; margin: 34px 0 0; padding: 0; list-style: none;
+}
+.feats li { position: relative; padding-left: 22px; }
+.feats li::before {
+  content: ""; position: absolute; left: 0; top: 8px;
+  width: 10px; height: 10px; background: var(--accent);
+}
+.feats b { display: block; font-weight: 600; }
+.feats span { display: block; margin-top: 2px; font-size: 16px; color: var(--muted); }
+
+.p-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.p-note { margin: 22px 0 0; max-width: 46ch; font-size: 16px; color: var(--muted); }
+.p-note b { color: var(--accent); font-weight: 600; }
+
+.acc-grass { --accent: var(--grass); }
+.acc-diamond { --accent: var(--diamond); }
+.acc-gold { --accent: var(--gold); }
+.acc-tnt { --accent: var(--tnt); }
+.acc-amethyst { --accent: var(--amethyst); }
+
+/* --- Window frame shared by illustrations --- */
+.win {
+  background: var(--panel);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .06), 0 30px 60px -20px rgba(0, 0, 0, .6);
+}
+.win-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px;
+  background: var(--panel-2);
+  font-size: 14px; font-weight: 600; color: var(--muted);
+}
+.win-dots { display: flex; gap: 6px; }
+.win-dots i { width: 10px; height: 10px; background: rgba(255, 255, 255, .16); display: block; }
+
+/* --- Launcher: instances --- */
+.inst { padding: 16px; display: grid; gap: 10px; }
+.inst-item {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center; gap: 14px;
+  width: 100%; padding: 12px; text-align: left;
+  font: inherit; color: inherit;
+  background: rgba(255, 255, 255, .03);
+  border: 0; box-shadow: inset 0 0 0 2px transparent;
   cursor: pointer;
 }
-.btn-primary {
-  background: var(--diamond);
-  color: var(--diamond-ink);
-  box-shadow: inset 0 3px 0 rgba(255, 255, 255, .45), inset 0 -4px 0 rgba(0, 0, 0, .28);
+.inst-item:hover { background: rgba(255, 255, 255, .06); }
+.inst-item[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--grass); background: rgba(116, 201, 78, .08); }
+.inst-ico { width: 44px; height: 44px; }
+.inst-name { display: block; font-weight: 600; font-size: 17px; }
+.inst-sub { display: block; font-size: 14px; color: var(--muted); }
+.inst-play {
+  padding: 8px 16px 9px; font-size: 15px; font-weight: 700;
+  background: var(--grass); color: #10131F;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .25);
+  visibility: hidden;
 }
-.btn-primary:hover { background: #7DF0E8; }
-.btn-primary:active { box-shadow: inset 0 4px 0 rgba(0, 0, 0, .28); padding-top: 14px; padding-bottom: 12px; }
-.btn-ghost {
-  background: transparent;
-  color: inherit;
-  box-shadow: inset 0 0 0 2px currentColor;
-}
-.btn-ghost:hover { background: rgba(255, 255, 255, .1); }
-.layer-sky .btn-ghost:hover { background: rgba(31, 42, 26, .07); }
+.inst-item[aria-pressed="true"] .inst-play { visibility: visible; }
+.win-add { padding: 4px 10px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2); font-weight: 500; }
 
-.status {
-  display: inline-block;
-  padding: 3px 10px 4px;
-  font-family: var(--pixel);
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 1.3;
-  white-space: nowrap;
-  vertical-align: middle;
+/* --- Server: console --- */
+.console {
+  height: 330px; padding: 16px 18px;
+  font-family: var(--mono); font-size: 14px; line-height: 1.7;
+  background: #12152A; color: #D4D8EA;
+  overflow: hidden;
 }
-.status-live { background: var(--diamond); color: var(--diamond-ink); }
-.status-dev { box-shadow: inset 0 0 0 2px currentColor; opacity: .85; }
+.console div { white-space: pre-wrap; word-break: break-word; }
+.c-time { color: #6E7598; }
+.c-info { color: var(--diamond); }
+.c-ok { color: var(--grass); }
+.c-join { color: var(--gold); }
+.c-chat { color: #fff; }
+.c-cursor::after {
+  content: ""; display: inline-block; width: 9px; height: 16px;
+  margin-left: 4px; vertical-align: -2px; background: var(--diamond);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .c-cursor::after { animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+}
+.players { color: var(--diamond); font-family: var(--mono); font-weight: 500; }
+.players-dot { display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: var(--grass); vertical-align: 1px; }
 
+/* --- Installer: chooser --- */
+.choose { padding: 22px; }
+.choose-q { margin: 0 0 14px; font-family: var(--display); font-weight: 600; font-size: 19px; }
+.opt {
+  display: grid; grid-template-columns: 26px 40px minmax(0, 1fr);
+  align-items: center; gap: 14px;
+  padding: 14px; margin-bottom: 10px;
+  background: rgba(255, 255, 255, .03);
+  cursor: pointer;
+}
+.opt:hover { background: rgba(255, 255, 255, .06); }
+.opt input {
+  appearance: none; -webkit-appearance: none;
+  width: 22px; height: 22px; margin: 0;
+  box-shadow: inset 0 0 0 2px rgba(237, 234, 245, .5);
+  display: grid; place-items: center; cursor: pointer;
+}
+.opt input:checked { background: var(--gold); box-shadow: none; }
+.opt input:checked::after {
+  content: ""; width: 10px; height: 6px;
+  border-left: 3px solid #10131F; border-bottom: 3px solid #10131F;
+  transform: translateY(-2px) rotate(-45deg);
+}
+.opt svg { width: 40px; height: 40px; }
+.opt b { display: block; font-weight: 600; }
+.opt small { display: block; font-size: 14px; color: var(--muted); }
+.choose-btn {
+  width: 100%; margin-top: 8px; padding: 13px;
+  font-size: 16px; font-weight: 700; text-align: center;
+  background: var(--gold); color: #10131F;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .25);
+}
+.choose-btn.is-off { background: rgba(255, 255, 255, .1); color: var(--muted); box-shadow: none; }
+
+/* ================= More projects ================= */
+
+.more-head { margin-bottom: 48px; }
 .h2 {
-  margin: 0;
-  font-family: var(--pixel);
-  font-weight: 700;
-  font-size: clamp(40px, 6.4vw, 76px);
-  line-height: 1;
+  margin: 0; font-family: var(--display); font-weight: 700;
+  font-size: clamp(34px, 4.6vw, 58px); line-height: 1.02; letter-spacing: -.02em;
 }
-.h3 {
-  margin: 0;
-  font-family: var(--pixel);
-  font-weight: 700;
-  font-size: clamp(30px, 4vw, 44px);
-  line-height: 1.05;
+.more-sub { margin: 16px 0 0; font-size: 20px; color: var(--muted); }
+.more {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
 }
-.lead {
-  max-width: 36ch;
-  margin: 20px 0 0;
-  font-size: clamp(19px, 2vw, 22px);
-  line-height: 1.45;
+.proj {
+  display: flex; flex-direction: column;
+  padding: 32px;
+  background: var(--panel);
+  box-shadow: inset 0 3px 0 var(--accent);
 }
-.copy {
-  max-width: 44ch;
-  margin: 14px 0 0;
-}
-.muted { opacity: .78; }
+.proj-art { height: 200px; margin: -8px 0 24px; display: grid; place-items: center; }
+.proj-art .drone { width: 176px; height: 176px; }
+.proj-title { margin: 0; font-family: var(--display); font-weight: 700; font-size: 32px; letter-spacing: -.02em; }
+.proj-kind { margin: 6px 0 0; font-size: 15px; color: var(--muted); }
+.proj-text { margin: 16px 0 0; max-width: 44ch; }
+.proj-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: auto; padding-top: 28px; }
 
-.title-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 18px;
+/* CaseLab roulette */
+.roll {
+  position: relative; width: 100%; height: 132px; overflow: hidden;
+  background: #12152A;
 }
+.roll::before, .roll::after {
+  content: ""; position: absolute; top: 0; bottom: 0; z-index: 2; width: 64px; pointer-events: none;
+}
+.roll::before { left: 0; background: linear-gradient(90deg, #12152A, transparent); }
+.roll::after { right: 0; background: linear-gradient(-90deg, #12152A, transparent); }
+.roll-mark {
+  position: absolute; left: 50%; top: 0; bottom: 0; z-index: 3;
+  width: 3px; margin-left: -1.5px; background: var(--gold);
+}
+.roll-strip { display: flex; gap: 6px; height: 100%; padding: 14px 0; will-change: transform; }
+.roll-item {
+  flex: none; width: 96px; height: 100%;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,.04), color-mix(in srgb, var(--r) 28%, transparent));
+  box-shadow: inset 0 -4px 0 var(--r);
+}
+.roll-item svg { width: 54px; height: 54px; margin-bottom: 6px; }
+.roll-item { flex-direction: column; }
+.roll-res { min-height: 24px; margin: 12px 0 0; font-size: 15px; color: var(--muted); }
+.roll-res b { color: var(--res, var(--text)); }
 
-/* ---------- Launcher (dirt) ---------- */
+/* ================= Orders + Telegram ================= */
 
-.launcher {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 48px 72px;
-  align-items: start;
+.orders-grid {
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 56px 72px; align-items: start;
 }
-.launcher-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-
-.features {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.features li {
-  padding: 18px 0 18px 32px;
-  position: relative;
-  border-top: 2px solid rgba(244, 239, 230, .14);
-}
-.features li:last-child { border-bottom: 2px solid rgba(244, 239, 230, .14); }
-.features li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 26px;
-  width: 12px;
-  height: 12px;
-  background: var(--grass);
-  box-shadow: inset 0 -4px 0 var(--grass-dark);
-}
-.features b {
-  display: block;
-  font-weight: 600;
-  font-size: 19px;
-}
-.features span { display: block; margin-top: 2px; opacity: .8; }
-
-.next {
-  margin-top: 28px;
-  padding: 18px 20px;
-  background: rgba(0, 0, 0, .18);
-}
-.next-title {
-  margin: 0;
-  font-family: var(--pixel);
-  font-weight: 500;
-  font-size: 18px;
-  color: var(--diamond);
-}
-.next p:last-child { margin: 6px 0 0; }
-
-/* ---------- Server + installer (stone) ---------- */
-
-.pair {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 56px 72px;
-}
-.pair-item { display: flex; flex-direction: column; align-items: flex-start; }
-.pair-item .btn { margin-top: 28px; }
-.pair-facts {
-  margin: 20px 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.pair-facts li {
-  padding: 4px 10px;
-  background: rgba(0, 0, 0, .2);
-  font-size: 15px;
-  font-weight: 500;
-}
-
-/* ---------- Mods & sites (deepslate) ---------- */
-
-.section-head { margin-bottom: 40px; }
-
-.works { border-top: 2px solid rgba(244, 239, 230, .14); }
-.work {
-  display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr) 220px;
-  gap: 16px 40px;
-  align-items: start;
-  padding: 32px 0;
-  border-bottom: 2px solid rgba(244, 239, 230, .14);
-}
-.work-name { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.work-kind { margin: 10px 0 0; font-size: 16px; opacity: .7; }
-.work-text { margin: 4px 0 0; max-width: 46ch; }
-.work-action { padding-top: 2px; }
-.work-action .btn { width: 100%; }
-
-/* Pixel clouds in the sky */
-.cloud {
-  position: absolute;
-  z-index: 0;
-  fill: #fff;
-  opacity: .75;
-  pointer-events: none;
-}
-.cloud-a { width: 264px; top: 440px; right: 7%; }
-.cloud-b { width: 168px; top: 600px; right: 27%; opacity: .55; }
-.top, .hero { position: relative; z-index: 1; }
-
-/* ---------- Bedrock: orders + telegram ---------- */
-
-.bottom {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: 56px 72px;
-}
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 0; padding: 0; list-style: none; }
+.tags li { padding: 6px 12px; background: var(--panel); font-size: 15px; font-weight: 500; }
 .example {
-  margin-top: 24px;
-  padding-left: 18px;
-  box-shadow: inset 4px 0 0 var(--diamond);
-  max-width: 46ch;
+  margin: 28px 0 0; padding: 18px 20px; max-width: 52ch;
+  background: rgba(255, 255, 255, .03); box-shadow: inset 4px 0 0 var(--amethyst);
 }
-.example p { margin: 0; }
-.bottom-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.example b { font-weight: 600; }
 
 .tg {
-  padding: 32px;
-  background: var(--deepslate);
-  box-shadow: inset 0 3px 0 rgba(255, 255, 255, .06), inset 0 -4px 0 rgba(0, 0, 0, .35);
-  align-self: start;
+  padding: 36px; background: var(--tg); color: #fff;
+  box-shadow: inset 0 4px 0 rgba(255, 255, 255, .25), inset 0 -6px 0 rgba(0, 0, 0, .2);
 }
-.tg .btn { margin-top: 24px; width: 100%; }
-.tg-handle {
-  margin: 14px 0 0;
-  font-family: var(--pixel);
-  font-size: 22px;
-  color: var(--diamond);
-  word-break: break-all;
-}
+.tg-plane { width: 64px; height: 64px; margin-bottom: 22px; }
+.tg-title { margin: 0; font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1.1; }
+.tg p { margin: 12px 0 0; }
+.tg-handle { font-family: var(--mono); font-weight: 500; font-size: 18px; opacity: .9; }
+.tg .btn { width: 100%; margin-top: 26px; background: #fff; color: #0F5E87; }
 
 .foot {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 12px 32px;
-  margin-top: clamp(64px, 9vw, 112px);
-  padding-top: 24px;
-  padding-bottom: 96px;
-  border-top: 2px solid rgba(244, 239, 230, .1);
-  font-size: 15px;
-  opacity: .6;
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 32px;
+  padding-top: 28px; padding-bottom: 140px;
+  border-top: 1px solid var(--line);
+  font-size: 15px; color: var(--muted);
 }
 .foot p { margin: 0; }
 
-/* ---------- Depth HUD (F3-style) ---------- */
+/* ================= Hotbar ================= */
 
-.hud {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 40;
-  padding: 8px 12px 9px;
-  background: rgba(20, 20, 22, .62);
-  color: #fff;
-  font-family: var(--pixel);
-  font-size: 15px;
-  line-height: 1.35;
+.hotbar {
+  position: fixed; left: 50%; bottom: 14px; z-index: 60;
+  transform: translateX(-50%);
+}
+.hb-label {
+  position: absolute; left: 50%; bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  font-family: var(--display); font-weight: 600; font-size: 15px;
+  white-space: nowrap; color: #fff;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, .55);
+  opacity: 0; transition: opacity .25s;
   pointer-events: none;
-  -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
 }
-.hud-y { font-variant-numeric: tabular-nums; }
-.hud-layer { opacity: .75; }
+.hb-label.is-on { opacity: 1; }
+.hb-row {
+  display: flex;
+  padding: 4px;
+  background: rgba(14, 16, 30, .78);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .14), 0 10px 30px rgba(0, 0, 0, .35);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.hb-slot {
+  position: relative; display: grid; place-items: center;
+  width: 58px; height: 58px;
+  text-decoration: none;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .08);
+}
+.hb-slot svg { width: 34px; height: 34px; }
+.hb-num {
+  position: absolute; right: 5px; bottom: 2px;
+  font-family: var(--mono); font-size: 11px; color: rgba(255, 255, 255, .55);
+}
+.hb-slot:hover { background: rgba(255, 255, 255, .07); }
+.hb-slot.is-on { box-shadow: inset 0 0 0 4px #fff; background: rgba(255, 255, 255, .06); }
+.hb-slot:focus-visible { outline-offset: -3px; }
 
-/* ---------- Responsive ---------- */
+/* ================= Responsive ================= */
 
-@media (max-width: 1080px) {
-  .cloud { display: none; }
+@media (max-width: 960px) {
+  .nav-links { display: none; }
+  .nav-tg { margin-left: auto; }
+  .hero-in { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-top: 48px; padding-bottom: 72px; }
+  .scene { --s: 40px; order: 2; margin-top: 8px; }
+  .product-grid, .orders-grid, .more { grid-template-columns: minmax(0, 1fr); }
+  .product-grid-flip > :first-child { order: 0; }
 }
-@media (max-width: 880px) {
-  .launcher, .pair, .bottom { grid-template-columns: minmax(0, 1fr); }
-  .work-action .btn { width: auto; }
-  .work { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .work-action { padding-top: 8px; }
-}
-@media (max-width: 560px) {
+@media (max-width: 600px) {
   body { font-size: 17px; }
-  .wrap { padding: 0 18px; }
-  .top-nav a:not(.top-nav-tg) { display: none; }
-  .btn { width: 100%; }
-  .hero-actions .btn, .launcher-actions .btn, .bottom-actions .btn, .work-action .btn { width: 100%; }
-  .tg { padding: 24px; }
-  .hud { right: 10px; bottom: 10px; font-size: 13px; padding: 6px 9px 7px; }
+  .wrap { padding-left: 18px; padding-right: 18px; }
+  .scene { --s: 33px; }
+  .moon { display: none; }
+  .hero-cta .btn, .p-cta .btn { width: 100%; }
+  .feats { grid-template-columns: minmax(0, 1fr); }
+  .p-icon { width: 44px; height: 44px; }
+  .proj { padding: 24px; }
+  .proj-foot .btn { width: 100%; }
+  .tg { padding: 26px; }
+  .console { height: 300px; font-size: 12.5px; padding: 14px; }
+  .inst-item { grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; padding: 10px; }
+  .inst-ico { width: 36px; height: 36px; }
+  .hb-slot { width: 44px; height: 44px; }
+  .hb-slot svg { width: 26px; height: 26px; }
+  .hb-num { display: none; }
+  .hotbar { bottom: 10px; }
+  .foot { padding-bottom: 110px; }
 }
 </style>
 </head>
 <body>
 
+<!-- Pixel icons, reused everywhere -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-launcher" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <rect x="1" y="1" width="14" height="14" fill="#3F7F2A"/><rect x="2" y="2" width="12" height="11" fill="#74C94E"/>
+      <path fill="#fff" d="M6 5h2v6H6zM8 6h2v4H8zM10 7h1v2h-1z"/>
+    </symbol>
+    <symbol id="i-server" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <rect x="2" y="1" width="12" height="14" fill="#4A5170"/>
+      <rect x="3" y="2" width="10" height="3" fill="#20243A"/><rect x="3" y="6" width="10" height="3" fill="#20243A"/><rect x="3" y="10" width="10" height="3" fill="#20243A"/>
+      <rect x="11" y="3" width="1" height="1" fill="#5CE6DC"/><rect x="11" y="7" width="1" height="1" fill="#5CE6DC"/><rect x="11" y="11" width="1" height="1" fill="#74C94E"/>
+      <rect x="4" y="3" width="4" height="1" fill="#6B7394"/><rect x="4" y="7" width="4" height="1" fill="#6B7394"/><rect x="4" y="11" width="4" height="1" fill="#6B7394"/>
+    </symbol>
+    <symbol id="i-installer" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <rect x="2" y="8" width="12" height="7" fill="#B9862B"/><rect x="2" y="8" width="12" height="2" fill="#F6C445"/>
+      <rect x="6" y="11" width="4" height="1" fill="#7E5A18"/>
+      <path fill="#fff" d="M7 1h2v5H7zM5 4h6v1H5zM6 5h4v1H6zM7 6h2v1H7z"/>
+    </symbol>
+    <symbol id="i-drone" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <path fill="#7D849C" d="M4 4h2v2H4zM10 4h2v2h-2zM4 10h2v2H4zM10 10h2v2h-2z"/>
+      <path fill="#C9CEDD" d="M1 2h5v1H1zM10 2h5v1h-5zM1 13h5v1H1zM10 13h5v1h-5z"/>
+      <path fill="#9AA1B8" d="M3 3h1v1H3zM12 3h1v1h-1zM3 12h1v1H3zM12 12h1v1h-1z"/>
+      <rect x="6" y="6" width="4" height="4" fill="#F0544F"/><rect x="7" y="7" width="2" height="2" fill="#2A1C24"/>
+    </symbol>
+    <symbol id="i-case" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <path fill="#8A90A6" d="M6 2h4v1H6zM5 3h1v2H5zM10 3h1v2h-1z"/>
+      <rect x="1" y="5" width="14" height="9" fill="#E58A3A"/><rect x="1" y="8" width="14" height="2" fill="#8B4FE0"/>
+      <rect x="7" y="8" width="2" height="3" fill="#F6C445"/><rect x="1" y="13" width="14" height="1" fill="#A85E22"/>
+    </symbol>
+    <symbol id="i-pick" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <path fill="#8A6638" d="M3 12h2v2H3zM5 10h2v2H5zM7 8h2v2H7zM2 14h1v1H2z"/>
+      <path fill="#B58CFF" d="M5 2h6v2H5zM11 3h2v2h-2zM12 5h2v6h-2zM3 3h2v2H3zM9 6h2v2H9z"/>
+      <path fill="#E4D6FF" d="M6 2h4v1H6zM13 6h1v3h-1z"/>
+    </symbol>
+    <symbol id="i-plane" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <path fill="#fff" d="M13 2h2v1h-2zM11 3h4v1h-4zM9 4h6v1H9zM7 5h7v1H7zM5 6h9v1H5zM2 7h11v1H2zM4 8h9v1H4z"/>
+      <path fill="#BFE6FA" d="M6 9h6v1H6zM6 10h5v1H6zM6 11h4v1H6zM6 12h2v1H6zM6 13h1v1H6z"/>
+    </symbol>
+    <symbol id="i-logo" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <rect width="16" height="16" fill="#7A5233"/><rect width="16" height="5" fill="#6DB43F"/>
+      <rect x="3" y="5" width="2" height="2" fill="#6DB43F"/><rect x="10" y="5" width="2" height="1" fill="#6DB43F"/>
+      <path fill="#F4EFE6" d="M3 6h2v7H3zM5 7h1v2H5zM6 8h1v2H6zM7 9h1v2H7zM8 10h1v2H8zM9 11h1v1H9zM10 6h2v7h-2z"/>
+    </symbol>
+    <symbol id="i-skin" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <path fill="currentColor" d="M1 7h11v2H1zM12 6h3v2h-3zM4 9h3v1H4zM5 10h2v3H5zM9 9h2v2H9z"/>
+      <path fill="rgba(255,255,255,.35)" d="M1 7h11v1H1z"/>
+    </symbol>
+  </defs>
+</svg>
+
 <a class="skip" href="#launcher">К проектам</a>
 
-<!-- Поверхность -->
-<header class="layer layer-sky" data-layer="Поверхность">
-  <svg class="cloud cloud-a" viewBox="0 0 24 8" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 3h3V1h4V0h7v2h3v2h3v4H0V5h4z"/></svg>
-  <svg class="cloud cloud-b" viewBox="0 0 24 8" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 3h5V0h9v2h5v2h3v4H0V5h2z"/></svg>
-  <div class="wrap top">
-    <a class="top-mark" href="#">NasokTeam</a>
-    <nav class="top-nav" aria-label="Разделы">
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#top"><svg aria-hidden="true"><use href="#i-logo"/></svg>NasokTeam</a>
+    <nav class="nav-links" aria-label="Разделы">
       <a href="#launcher">Лаунчер</a>
       <a href="#server">Сервер</a>
-      <a href="#works">Моды и сайты</a>
+      <a href="#installer">Установщик</a>
+      <a href="#more">Моды и сайты</a>
       <a href="#orders">Заказы</a>
-      <a class="top-nav-tg" href="https://t.me/NasokTeamHab" data-link="telegram">Telegram</a>
     </nav>
-  </div>
-
-  <div class="wrap hero">
-    <h1 class="hero-title" aria-label="NasokTeam"><span style="--i:0" aria-hidden="true">N</span><span style="--i:1" aria-hidden="true">a</span><span style="--i:2" aria-hidden="true">s</span><span style="--i:3" aria-hidden="true">o</span><span style="--i:4" aria-hidden="true">k</span><span style="--i:5" aria-hidden="true">T</span><span style="--i:6" aria-hidden="true">e</span><span style="--i:7" aria-hidden="true">a</span><span style="--i:8" aria-hidden="true">m</span></h1>
-    <p class="hero-lead">Делаем свой лаунчер, программу для сервера на своём ПК, моды и плагины для Minecraft.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="https://t.me/NasokTeamHab" data-link="launcher">Скачать Nasok Launcher</a>
-      <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Наш Telegram-канал</a>
-    </div>
-    <a class="hero-news" href="#launcher"><span class="status status-live">2.2</span>Вышла новая версия лаунчера</a>
+    <a class="nav-tg" href="https://t.me/NasokTeamHab" data-link="telegram">Telegram</a>
   </div>
 </header>
 
-<div class="edge edge-sky-grass" aria-hidden="true"></div>
-<div class="edge edge-grass-dirt edge-drip" aria-hidden="true"></div>
+<main id="top">
 
-<main>
-
-<!-- Земля: лаунчер -->
-<section class="layer layer-dirt" id="launcher" data-layer="Земля" aria-labelledby="launcher-title">
-  <div class="wrap layer-body launcher">
+<!-- ================= Hero ================= -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="stars" aria-hidden="true"></div>
+  <div class="moon" aria-hidden="true"></div>
+  <div class="wrap hero-in">
     <div>
-      <div class="title-row">
-        <h2 class="h2" id="launcher-title">Nasok Launcher</h2>
-        <span class="status status-live">Версия 2.2</span>
-      </div>
-      <p class="lead">Лаунчер Minecraft для Windows. Собирай свои сборки, ставь любые версии и заходи в игру по нику.</p>
-      <div class="launcher-actions">
-        <a class="btn btn-primary" href="https://t.me/NasokTeamHab" data-link="launcher">Скачать в Telegram</a>
-      </div>
-      <div class="next">
-        <p class="next-title">В следующем обновлении</p>
-        <p>Оптимизация в один клик и свои скины в офлайне через CustomSkinLoader.</p>
+      <h1 class="hero-title" id="hero-title">NasokTeam</h1>
+      <p class="hero-lead">Делаем свой лаунчер, программу для сервера на своём ПК, моды и плагины для Minecraft.</p>
+      <div class="hero-cta">
+        <a class="btn acc-grass" href="https://t.me/NasokTeamHab" data-link="launcher">Скачать Nasok Launcher</a>
+        <a class="btn btn-ghost" href="#server">Nasok Server</a>
       </div>
     </div>
-
-    <ul class="features">
-      <li><b>Сборки прямо в главном окне</b><span>Создавай, настраивай и запускай сборки, не открывая кучу отдельных окон.</span></li>
-      <li><b>Несколько стилей интерфейса</b><span>Классический стоит по умолчанию, остальные переключаются в настройках.</span></li>
-      <li><b>Вход по нику</b><span>Играй с офлайн-аккаунтом, аккаунт Microsoft не нужен.</span></li>
-      <li><b>Windows 10 и 11</b><span>Работает на .NET 6.</span></li>
-    </ul>
+    <div class="scene" aria-hidden="true">
+      <div class="bob"><div class="world" id="world"></div></div>
+    </div>
   </div>
 </section>
 
-<div class="edge edge-dirt-stone edge-shift" aria-hidden="true"></div>
-
-<!-- Камень: сервер и установщик -->
-<section class="layer layer-stone" id="server" data-layer="Камень" aria-label="Nasok Server и Nasok Installer">
-  <div class="wrap layer-body pair">
-    <article class="pair-item">
-      <div class="title-row">
-        <h2 class="h3">Nasok Server</h2>
-        <span class="status status-dev">В разработке</span>
+<!-- ================= Launcher ================= -->
+<section class="product acc-grass" id="launcher" data-slot="0" aria-labelledby="launcher-title">
+  <div class="wrap product-grid">
+    <div>
+      <div class="p-head">
+        <svg class="p-icon" aria-hidden="true"><use href="#i-launcher"/></svg>
+        <h2 class="p-title" id="launcher-title">Nasok Launcher</h2>
       </div>
-      <p class="copy">Свой сервер Minecraft прямо на твоём компьютере. Без хостинга, домена и VPS, полностью бесплатно. Друзья подключаются по IP.</p>
-      <ul class="pair-facts" aria-label="Коротко">
-        <li>Бесплатно</li>
-        <li>Запуск на своём ПК</li>
-        <li>Вход по IP</li>
+      <div class="p-meta"><span class="chip chip-live">Версия 2.2</span><span class="chip chip-dev">Windows 10 и 11</span></div>
+      <p class="p-lead">Лаунчер Minecraft, в котором удобно держать много сборок и заходить в игру по нику.</p>
+      <ul class="feats">
+        <li><b>Сборки в одном окне</b><span>Создавай, настраивай и запускай сборки без кучи отдельных окон.</span></li>
+        <li><b>Любые версии</b><span>Ванилла, Fabric, Forge — ставь то, на чём играешь.</span></li>
+        <li><b>Вход по нику</b><span>Офлайн-аккаунт, аккаунт Microsoft не нужен.</span></li>
+        <li><b>Несколько стилей</b><span>Классический по умолчанию, остальные в настройках.</span></li>
       </ul>
-      <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Узнать о выходе в Telegram</a>
-    </article>
-
-    <article class="pair-item">
-      <div class="title-row">
-        <h2 class="h3">Nasok Installer</h2>
-        <span class="status status-dev">В разработке</span>
+      <div class="p-cta">
+        <a class="btn" href="https://t.me/NasokTeamHab" data-link="launcher">Скачать Nasok Launcher</a>
       </div>
-      <p class="copy">Один установщик для всех наших программ. Выбираешь, что поставить — Nasok Launcher или Nasok Server, — и он сам всё скачает.</p>
-      <ul class="pair-facts" aria-label="Коротко">
-        <li>Лаунчер или сервер на выбор</li>
-        <li>.NET 6</li>
-      </ul>
-      <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Узнать о выходе в Telegram</a>
-    </article>
+      <p class="p-note"><b>Скоро:</b> оптимизация в один клик и свои скины в офлайне через CustomSkinLoader.</p>
+    </div>
+
+    <div class="win" aria-label="Пример списка сборок" role="group">
+      <div class="win-bar">
+        <span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>Сборки</span>
+        <span class="win-add" aria-hidden="true">+ Новая</span>
+      </div>
+      <div class="inst" id="inst">
+        <button class="inst-item" type="button" aria-pressed="true">
+          <svg class="inst-ico" aria-hidden="true"><use href="#i-logo"/></svg>
+          <span><span class="inst-name">Выживание с друзьями</span><span class="inst-sub">Fabric 1.21.4, 38 модов</span></span>
+          <span class="inst-play" aria-hidden="true">Играть</span>
+        </button>
+        <button class="inst-item" type="button" aria-pressed="false">
+          <svg class="inst-ico" aria-hidden="true"><use href="#i-launcher"/></svg>
+          <span><span class="inst-name">Ванилла</span><span class="inst-sub">1.21.4, без модов</span></span>
+          <span class="inst-play" aria-hidden="true">Играть</span>
+        </button>
+        <button class="inst-item" type="button" aria-pressed="false">
+          <svg class="inst-ico" aria-hidden="true"><use href="#i-server"/></svg>
+          <span><span class="inst-name">Техно</span><span class="inst-sub">Forge 1.20.1, 112 модов</span></span>
+          <span class="inst-play" aria-hidden="true">Играть</span>
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 
-<div class="edge edge-stone-deep" aria-hidden="true"></div>
-
-<!-- Глубинный сланец: моды и сайты -->
-<section class="layer layer-deepslate" id="works" data-layer="Глубинный сланец" aria-labelledby="works-title">
-  <div class="wrap layer-body">
-    <div class="section-head">
-      <h2 class="h2" id="works-title">Моды и сайты</h2>
-      <p class="lead">Делаем не только программы.</p>
+<!-- ================= Server ================= -->
+<section class="product product-alt acc-diamond" id="server" data-slot="1" aria-labelledby="server-title">
+  <div class="wrap product-grid product-grid-flip">
+    <div>
+      <div class="p-head">
+        <svg class="p-icon" aria-hidden="true"><use href="#i-server"/></svg>
+        <h2 class="p-title" id="server-title">Nasok Server</h2>
+      </div>
+      <div class="p-meta"><span class="chip chip-dev">В разработке</span><span class="chip chip-dev">Бесплатно</span></div>
+      <p class="p-lead">Свой сервер Minecraft прямо на твоём компьютере. Запустил, дал друзьям IP — и вы играете вместе.</p>
+      <ul class="feats">
+        <li><b>Без хостинга</b><span>Сервер работает на твоём ПК, платить за VPS не нужно.</span></li>
+        <li><b>Вход по IP</b><span>Никаких доменов: друзья подключаются по адресу.</span></li>
+        <li><b>Полностью бесплатно</b><span>Ни подписок, ни платных функций.</span></li>
+        <li><b>Вместе с лаунчером</b><span>Ставится через Nasok Installer рядом с Nasok Launcher.</span></li>
+      </ul>
+      <div class="p-cta">
+        <a class="btn" href="https://t.me/NasokTeamHab" data-link="telegram">Узнать о выходе в Telegram</a>
+      </div>
     </div>
 
-    <div class="works">
-      <article class="work">
-        <div class="work-name">
-          <h3 class="h3">ShahedMod</h3>
-          <span class="status status-dev">В разработке</span>
-        </div>
-        <div>
-          <p class="work-kind">Мод для Fabric 1.21.11</p>
-          <p class="work-text">Дроны, ракеты с наведением через камеру и взрывы. Дорабатываем реализм, анимации и прицеливание.</p>
-        </div>
-        <div class="work-action">
+    <div class="win" aria-hidden="true">
+      <div class="win-bar">
+        <span class="win-dots"><i></i><i></i><i></i></span>
+        <span>Nasok Server</span>
+        <span class="players"><span class="players-dot"></span><span id="players">0</span>/20</span>
+      </div>
+      <div class="console" id="console"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Installer ================= -->
+<section class="product acc-gold" id="installer" data-slot="2" aria-labelledby="installer-title">
+  <div class="wrap product-grid">
+    <div>
+      <div class="p-head">
+        <svg class="p-icon" aria-hidden="true"><use href="#i-installer"/></svg>
+        <h2 class="p-title" id="installer-title">Nasok Installer</h2>
+      </div>
+      <div class="p-meta"><span class="chip chip-dev">В разработке</span></div>
+      <p class="p-lead">Один установщик для всех наших программ. Отмечаешь, что нужно, — он сам скачает и поставит.</p>
+      <ul class="feats">
+        <li><b>Лаунчер или сервер</b><span>Ставь одно из двух или оба сразу.</span></li>
+        <li><b>В стиле наших программ</b><span>Выглядит так же, как лаунчер и сервер.</span></li>
+      </ul>
+      <div class="p-cta">
+        <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Следить в Telegram</a>
+      </div>
+    </div>
+
+    <div class="win">
+      <div class="win-bar">
+        <span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>Nasok Installer</span>
+        <span aria-hidden="true"></span>
+      </div>
+      <fieldset class="choose" style="border:0;margin:0">
+        <legend class="choose-q">Что установить?</legend>
+        <label class="opt">
+          <input type="checkbox" name="pick" checked>
+          <svg aria-hidden="true"><use href="#i-launcher"/></svg>
+          <span><b>Nasok Launcher</b><small>Лаунчер со сборками</small></span>
+        </label>
+        <label class="opt">
+          <input type="checkbox" name="pick">
+          <svg aria-hidden="true"><use href="#i-server"/></svg>
+          <span><b>Nasok Server</b><small>Сервер на своём ПК</small></span>
+        </label>
+        <div class="choose-btn" id="choose-btn" aria-live="polite">Установить: 1 программа</div>
+      </fieldset>
+    </div>
+  </div>
+</section>
+
+<!-- ================= More projects ================= -->
+<section class="product product-alt" id="more" data-slot="3" aria-labelledby="more-title">
+  <div class="wrap">
+    <div class="more-head">
+      <h2 class="h2" id="more-title">Моды и сайты</h2>
+      <p class="more-sub">Делаем не только программы.</p>
+    </div>
+    <div class="more">
+      <article class="proj acc-tnt" id="shahedmod">
+        <div class="proj-art" aria-hidden="true"><svg class="drone"><use href="#i-drone"/></svg></div>
+        <h3 class="proj-title">ShahedMod</h3>
+        <p class="proj-kind">Мод для Fabric 1.21.11</p>
+        <p class="proj-text">Дроны, ракеты с наведением через камеру и взрывы. Сейчас дорабатываем реализм, анимации и прицеливание.</p>
+        <div class="proj-foot">
+          <span class="chip chip-dev">В разработке</span>
           <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Следить в Telegram</a>
         </div>
       </article>
 
-      <article class="work">
-        <div class="work-name">
-          <h3 class="h3">CaseLab</h3>
-          <span class="status status-live">Работает</span>
+      <article class="proj acc-amethyst" id="caselab" data-slot="4">
+        <div class="proj-art" style="display:block;height:auto">
+          <div class="roll" aria-hidden="true">
+            <div class="roll-mark"></div>
+            <div class="roll-strip" id="roll-strip"></div>
+          </div>
+          <p class="roll-res" id="roll-res" aria-live="polite">Нажми «Крутить», чтобы открыть кейс.</p>
         </div>
-        <div>
-          <p class="work-kind">Сайт, симулятор кейсов CS2</p>
-          <p class="work-text">Открывай кейсы, делай апгрейды и контракты, устраивай баттлы с ботами и друзьями. Реальные скины, цены в рублях, баланс сохраняется.</p>
-        </div>
-        <div class="work-action">
-          <a class="btn btn-primary" href="https://daytepoigratvasphalt8-prog.github.io/caselab/" data-link="caselab">Открыть CaseLab</a>
+        <h3 class="proj-title">CaseLab</h3>
+        <p class="proj-kind">Сайт, симулятор кейсов CS2</p>
+        <p class="proj-text">Открывай кейсы, делай апгрейды и контракты, устраивай баттлы с ботами и друзьями. Реальные скины, цены в рублях, баланс сохраняется.</p>
+        <div class="proj-foot">
+          <button class="btn btn-ghost" type="button" id="roll-btn">Крутить</button>
+          <a class="btn" href="https://daytepoigratvasphalt8-prog.github.io/caselab/" data-link="caselab">Открыть CaseLab</a>
         </div>
       </article>
     </div>
   </div>
 </section>
 
-<div class="edge edge-deep-bedrock edge-shift" aria-hidden="true"></div>
-
-<!-- Бедрок: заказы и Telegram -->
-<section class="layer layer-bedrock" id="orders" data-layer="Бедрок" aria-labelledby="orders-title">
-  <div class="wrap layer-body bottom">
+<!-- ================= Orders + Telegram ================= -->
+<section class="product acc-amethyst" id="orders" data-slot="5" aria-labelledby="orders-title">
+  <div class="wrap orders-grid">
     <div>
-      <h2 class="h2" id="orders-title">Плагины и сервера на заказ</h2>
-      <p class="lead">Напишем плагин под твой сервер или настроим сервер с нуля.</p>
-      <p class="copy muted">Paper и Spigot, миры Multiverse, мини-игры, настройка и правки готовых плагинов. Заказы принимаем на FunPay.</p>
-      <div class="example">
-        <p><b>Из последнего — Pillars Multiverse Edition.</b> Мини-игра для Paper 1.20+, где каждый матч идёт в свежей копии карты, а после игры мир удаляется.</p>
+      <div class="p-head">
+        <svg class="p-icon" aria-hidden="true"><use href="#i-pick"/></svg>
+        <h2 class="p-title" id="orders-title">Плагины на заказ</h2>
       </div>
-      <div class="bottom-actions">
-        <a class="btn btn-primary" href="https://funpay.com/" data-link="funpay" hidden>Заказать на FunPay</a>
+      <p class="p-lead">Напишем плагин под твой сервер или настроим сервер с нуля. Заказы принимаем на FunPay.</p>
+      <ul class="tags" aria-label="Что делаем">
+        <li>Paper и Spigot</li>
+        <li>Мини-игры</li>
+        <li>Миры Multiverse</li>
+        <li>Настройка сервера</li>
+        <li>Правки готовых плагинов</li>
+      </ul>
+      <p class="example"><b>Из последнего — Pillars Multiverse Edition.</b> Мини-игра для Paper 1.20+: каждый матч идёт в свежей копии карты, а после игры мир удаляется.</p>
+      <div class="p-cta">
+        <a class="btn" href="https://funpay.com/" data-link="funpay" hidden>Заказать на FunPay</a>
         <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Связаться через Telegram</a>
       </div>
     </div>
 
-    <aside class="tg" aria-labelledby="tg-title">
-      <h2 class="h3" id="tg-title">Telegram-канал</h2>
-      <p class="copy">Релизы, обновления и анонсы выходят там первыми. Файлы для скачивания тоже там.</p>
+    <aside class="tg" id="telegram" data-slot="6" aria-labelledby="tg-title">
+      <svg class="tg-plane" aria-hidden="true"><use href="#i-plane"/></svg>
+      <h2 class="tg-title" id="tg-title">Наш Telegram-канал</h2>
+      <p>Релизы, файлы для скачивания и анонсы выходят там первыми.</p>
       <p class="tg-handle">@NasokTeamHab</p>
-      <a class="btn btn-primary" href="https://t.me/NasokTeamHab" data-link="telegram">Подписаться</a>
+      <a class="btn" href="https://t.me/NasokTeamHab" data-link="telegram">Подписаться</a>
     </aside>
   </div>
-
-  <footer class="wrap foot">
-    <p>© <span id="year">2026</span> NasokTeam. Дальше не копается.</p>
-    <p>Minecraft — товарный знак Mojang Studios. Мы не связаны с Mojang и Microsoft.</p>
-  </footer>
 </section>
 
 </main>
 
-<div class="hud" aria-hidden="true">
-  <div class="hud-y">Y: <span id="hud-y">64</span></div>
-  <div class="hud-layer" id="hud-layer">Поверхность</div>
-</div>
+<footer class="wrap foot">
+  <p>© <span id="year">2026</span> NasokTeam</p>
+  <p>Minecraft — товарный знак Mojang Studios. Мы не связаны с Mojang и Microsoft.</p>
+</footer>
+
+<!-- Hotbar navigation: keys 1–7 -->
+<nav class="hotbar" aria-label="Быстрый переход">
+  <div class="hb-label" id="hb-label" aria-hidden="true"></div>
+  <div class="hb-row">
+    <a class="hb-slot" href="#launcher" data-name="Nasok Launcher"><svg aria-hidden="true"><use href="#i-launcher"/></svg><span class="hb-num" aria-hidden="true">1</span><span class="sr-only">Nasok Launcher</span></a>
+    <a class="hb-slot" href="#server" data-name="Nasok Server"><svg aria-hidden="true"><use href="#i-server"/></svg><span class="hb-num" aria-hidden="true">2</span><span class="sr-only">Nasok Server</span></a>
+    <a class="hb-slot" href="#installer" data-name="Nasok Installer"><svg aria-hidden="true"><use href="#i-installer"/></svg><span class="hb-num" aria-hidden="true">3</span><span class="sr-only">Nasok Installer</span></a>
+    <a class="hb-slot" href="#shahedmod" data-name="ShahedMod"><svg aria-hidden="true"><use href="#i-drone"/></svg><span class="hb-num" aria-hidden="true">4</span><span class="sr-only">ShahedMod</span></a>
+    <a class="hb-slot" href="#caselab" data-name="CaseLab"><svg aria-hidden="true"><use href="#i-case"/></svg><span class="hb-num" aria-hidden="true">5</span><span class="sr-only">CaseLab</span></a>
+    <a class="hb-slot" href="#orders" data-name="Плагины на заказ"><svg aria-hidden="true"><use href="#i-pick"/></svg><span class="hb-num" aria-hidden="true">6</span><span class="sr-only">Плагины на заказ</span></a>
+    <a class="hb-slot" href="#telegram" data-name="Telegram-канал"><svg aria-hidden="true"><use href="#i-plane"/></svg><span class="hb-num" aria-hidden="true">7</span><span class="sr-only">Telegram-канал</span></a>
+  </div>
+</nav>
 
 <script>
 /* ===== Ссылки сайта: меняй здесь =====
    telegram — канал команды
    launcher — где скачать Nasok Launcher (сейчас ведёт в канал)
    caselab  — сайт CaseLab
-   funpay   — ссылка на ваш профиль/лоты FunPay (пусто = кнопка скрыта) */
-const LINKS = {
+   funpay   — ссылка на ваши лоты FunPay (пусто = кнопка скрыта) */
+var LINKS = {
   telegram: "https://t.me/NasokTeamHab",
   launcher: "https://t.me/NasokTeamHab",
   caselab: "https://daytepoigratvasphalt8-prog.github.io/caselab/",
   funpay: ""
 };
 
+var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 document.querySelectorAll("[data-link]").forEach(function (a) {
   var url = LINKS[a.dataset.link];
   if (url) {
-    a.href = url;
-    a.hidden = false;
+    a.href = url; a.hidden = false;
     if (/^https?:/.test(url)) { a.target = "_blank"; a.rel = "noopener"; }
-  } else {
-    a.hidden = true;
-  }
+  } else { a.hidden = true; }
 });
-
 document.getElementById("year").textContent = new Date().getFullYear();
 
-/* Глубина: скролл от поверхности (Y 64) до бедрока (Y -59) */
+/* ---------- Voxel island ---------- */
 (function () {
-  var yEl = document.getElementById("hud-y");
-  var layerEl = document.getElementById("hud-layer");
-  var layers = Array.prototype.slice.call(document.querySelectorAll("[data-layer]"));
-  var TOP = 64, BOTTOM = -59, ticking = false;
+  var world = document.getElementById("world");
+  var blocks = [];
+  var add = function (x, y, z, t) { blocks.push([x, y, z, t]); };
+  var x, z;
+  for (x = 0; x < 5; x++) for (z = 0; z < 5; z++) {
+    if ((x === 0 || x === 4) && (z === 0 || z === 4)) continue;
+    add(x, 0, z, "grass");
+  }
+  for (x = 1; x < 4; x++) for (z = 1; z < 4; z++) add(x, -1, z, (x === 3 && z === 3) ? "ore" : "dirt");
+  add(2, -2, 2, "stone"); add(1, -2, 2, "stone"); add(2, -2, 3, "stone"); add(2, -3, 2, "stone");
+  add(1, 1, 1, "log"); add(1, 2, 1, "log"); add(1, 3, 1, "log");
+  for (x = 0; x < 3; x++) for (z = 0; z < 3; z++) if (!(x === 1 && z === 1)) add(x, 3, z, "leaves");
+  add(1, 4, 1, "leaves"); add(0, 4, 1, "leaves"); add(2, 4, 1, "leaves"); add(1, 4, 0, "leaves"); add(1, 4, 2, "leaves");
+  add(3, 1, 3, "server");
+  add(3, 1, 1, "tnt");
 
+  var taken = {};
+  blocks.forEach(function (b) { taken[b[0] + "," + b[1] + "," + b[2]] = true; });
+  var dirs = { top: [0, 1, 0], front: [0, 0, 1], back: [0, 0, -1], right: [1, 0, 0], left: [-1, 0, 0] };
+  var html = "";
+  blocks.forEach(function (b) {
+    var faces = "";
+    for (var d in dirs) {
+      var v = dirs[d];
+      if (taken[(b[0] + v[0]) + "," + (b[1] + v[1]) + "," + (b[2] + v[2])]) continue;
+      faces += '<div class="f f-' + d + ' t-' + b[3] + '"></div>';
+    }
+    if (faces) html += '<div class="cube" style="--x:' + (b[0] - 2) + ';--y:' + b[1] + ';--z:' + (b[2] - 2) + '">' + faces + "</div>";
+  });
+  world.innerHTML = html;
+})();
+
+/* ---------- Launcher: pick an instance ---------- */
+(function () {
+  var items = document.querySelectorAll(".inst-item");
+  items.forEach(function (it) {
+    it.addEventListener("click", function () {
+      items.forEach(function (o) { o.setAttribute("aria-pressed", o === it ? "true" : "false"); });
+    });
+  });
+})();
+
+/* ---------- Server: console ---------- */
+(function () {
+  var box = document.getElementById("console");
+  var playersEl = document.getElementById("players");
+  var lines = [
+    ["12:00:01", "Starting minecraft server version 1.21.4"],
+    ["12:00:01", "Loading properties"],
+    ["12:00:02", 'Preparing level "world"'],
+    ["12:00:04", "Preparing spawn area: 100%"],
+    ["12:00:04", 'Done (3.104s)! For help, type "help"', "ok"],
+    ["12:00:31", "nasok joined the game", "join", 1],
+    ["12:00:47", "vasya joined the game", "join", 2],
+    ["12:01:05", "<vasya> го строить базу", "chat"],
+    ["12:01:09", "<nasok> ща, только алмазы найду", "chat"]
+  ];
+  function row(l) {
+    var d = document.createElement("div");
+    var cls = l[2] === "ok" ? "c-ok" : l[2] === "join" ? "c-join" : l[2] === "chat" ? "c-chat" : "";
+    d.innerHTML = '<span class="c-time">[' + l[0] + ' <span class="c-info">INFO</span>]:</span> <span class="' + cls + '"></span>';
+    d.lastChild.textContent = l[1];
+    if (l[3]) playersEl.textContent = l[3];
+    return d;
+  }
+  function cursor() { var c = document.createElement("div"); c.className = "c-cursor"; c.textContent = ">"; box.appendChild(c); }
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    lines.forEach(function (l) { box.appendChild(row(l)); }); cursor(); return;
+  }
+  var started = false;
+  new IntersectionObserver(function (es, obs) {
+    if (started || !es[0].isIntersecting) return;
+    started = true; obs.disconnect();
+    var i = 0;
+    (function next() {
+      if (i >= lines.length) { cursor(); return; }
+      box.appendChild(row(lines[i]));
+      var wait = lines[i][2] === "ok" ? 900 : lines[i][2] ? 1100 : 420;
+      i++; setTimeout(next, wait);
+    })();
+  }, { threshold: .4 }).observe(box);
+})();
+
+/* ---------- Installer: choose ---------- */
+(function () {
+  var boxes = document.querySelectorAll('.opt input');
+  var btn = document.getElementById("choose-btn");
+  function upd() {
+    var n = 0; boxes.forEach(function (b) { if (b.checked) n++; });
+    btn.textContent = n === 0 ? "Отметь, что установить" : n === 1 ? "Установить: 1 программа" : "Установить: 2 программы";
+    btn.classList.toggle("is-off", n === 0);
+  }
+  boxes.forEach(function (b) { b.addEventListener("change", upd); });
+  upd();
+})();
+
+/* ---------- CaseLab: roulette ---------- */
+(function () {
+  var R = [
+    { n: "Армейское качество", c: "#4B69FF", w: 60 },
+    { n: "Запрещённое", c: "#8847FF", w: 24 },
+    { n: "Засекреченное", c: "#D32CE6", w: 10 },
+    { n: "Тайное", c: "#EB4B4B", w: 5 },
+    { n: "Редкий особый предмет", c: "#E4AE39", w: 1 }
+  ];
+  var strip = document.getElementById("roll-strip");
+  var res = document.getElementById("roll-res");
+  var btn = document.getElementById("roll-btn");
+  var ITEM = 96, GAP = 6, COUNT = 48, WIN = 40, spinning = false, pos = 0;
+
+  function pick() {
+    var r = Math.random() * 100, acc = 0;
+    for (var i = 0; i < R.length; i++) { acc += R[i].w; if (r < acc) return R[i]; }
+    return R[0];
+  }
+  function fill(win) {
+    var items = [];
+    for (var i = 0; i < COUNT; i++) items.push(i === WIN ? win : pick());
+    strip.innerHTML = items.map(function (r) {
+      return '<div class="roll-item" style="--r:' + r.c + ';color:' + r.c + '"><svg><use href="#i-skin"/></svg></div>';
+    }).join("");
+  }
+  function offsetFor(idx, jitter) {
+    var w = strip.parentNode.clientWidth;
+    return -(idx * (ITEM + GAP) + ITEM / 2 - w / 2 + jitter);
+  }
+  fill(pick());
+  strip.style.transform = "translateX(" + offsetFor(3, 0) + "px)";
+
+  btn.addEventListener("click", function () {
+    if (spinning) return;
+    spinning = true;
+    var win = pick();
+    fill(win);
+    strip.style.transition = "none";
+    strip.style.transform = "translateX(" + offsetFor(3, 0) + "px)";
+    strip.offsetWidth;
+    var jitter = Math.round((Math.random() - .5) * (ITEM - 20));
+    strip.style.transition = reduceMotion ? "none" : "transform 4.2s cubic-bezier(.12,.75,.1,1)";
+    strip.style.transform = "translateX(" + offsetFor(WIN, jitter) + "px)";
+    res.textContent = "Крутим…";
+    setTimeout(function () {
+      res.innerHTML = 'Выпало: <b style="--res:' + win.c + '"></b>';
+      res.querySelector("b").textContent = win.n;
+      spinning = false;
+    }, reduceMotion ? 50 : 4300);
+  });
+})();
+
+/* ---------- Hotbar: scroll spy + keys 1–7 ---------- */
+(function () {
+  var slots = Array.prototype.slice.call(document.querySelectorAll(".hb-slot"));
+  var label = document.getElementById("hb-label");
+  var targets = slots.map(function (s) { return document.querySelector(s.getAttribute("href")); });
+  var current = -1, hideT, ticking = false;
+
+  function setCurrent(i) {
+    if (i === current) return;
+    current = i;
+    slots.forEach(function (s, k) {
+      s.classList.toggle("is-on", k === i);
+      if (k === i) s.setAttribute("aria-current", "true"); else s.removeAttribute("aria-current");
+    });
+    if (i < 0) { label.classList.remove("is-on"); return; }
+    label.textContent = slots[i].dataset.name;
+    label.classList.add("is-on");
+    clearTimeout(hideT);
+    hideT = setTimeout(function () { label.classList.remove("is-on"); }, 1800);
+  }
   function update() {
     ticking = false;
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-    yEl.textContent = Math.round(TOP + (BOTTOM - TOP) * p);
-
-    var mid = window.innerHeight * 0.5, current = layers[0];
-    for (var i = 0; i < layers.length; i++) {
-      if (layers[i].getBoundingClientRect().top <= mid) current = layers[i];
-    }
-    layerEl.textContent = current.dataset.layer;
+    var mid = window.innerHeight * .45, idx = -1;
+    var prevTop = null;
+    targets.forEach(function (t, k) {
+      if (!t) return;
+      var top = t.getBoundingClientRect().top;
+      var tie = prevTop !== null && Math.abs(top - prevTop) < 4; /* side-by-side cards: keep the first */
+      if (top <= mid && !tie) idx = k;
+      prevTop = top;
+    });
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) idx = targets.length - 1;
+    setCurrent(idx);
   }
-
   window.addEventListener("scroll", function () {
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }, { passive: true });
-  window.addEventListener("resize", update);
+  window.addEventListener("keydown", function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    var n = parseInt(e.key, 10);
+    if (n >= 1 && n <= slots.length) { slots[n - 1].click(); }
+  });
   update();
 })();
 </script>
