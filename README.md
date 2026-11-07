@@ -1,20 +1,18 @@
 # NasokTeam — сайт
 
-Сайт команды NasokTeam: Nasok Launcher, Nasok Server, Nasok Installer, моды, CaseLab и заказы плагинов.
+Сайт команды NasokTeam: Nasok Launcher, Nasok Server и Nasok Installer.
 
 **Открыть:** https://daytepoigratvasphalt8-prog.github.io/nasokteam/
 
 ## Как поменять ссылки
 
-Все ссылки собраны в одном месте — в конце `index.html`, объект `LINKS`:
+Ссылки собраны в конце `index.html`, объект `LINKS`:
 
 ```js
-const LINKS = {
+var LINKS = {
   telegram: "https://t.me/NasokTeamHab",
-  launcher: "https://t.me/NasokTeamHab",   // прямая ссылка на скачивание лаунчера
-  caselab: "https://daytepoigratvasphalt8-prog.github.io/caselab/",
-  funpay: ""                                // ссылка на ваши лоты FunPay — появится кнопка «Заказать на FunPay»
+  launcher: "https://t.me/NasokTeamHab"   // прямая ссылка на скачивание Nasok Launcher
 };
 ```
 
-Тексты проектов правятся прямо в `index.html`, всё на одной странице, без сборки.
+Тексты правятся прямо в `index.html`, всё на одной странице, без сборки.
