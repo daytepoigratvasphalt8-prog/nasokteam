@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NasokTeam — лаунчер, сервер и моды для Minecraft</title>
+<meta name="description" content="NasokTeam делает Nasok Launcher, Nasok Server, моды и плагины для Minecraft. Скачивай, следи за обновлениями в Telegram, заказывай плагины.">
+<meta name="theme-color" content="#BFE3F2">
+<meta property="og:type" content="website">
+<meta property="og:title" content="NasokTeam">
+<meta property="og:description" content="Лаунчер, сервер на своём ПК, моды и плагины для Minecraft.">
+<meta property="og:url" content="https://daytepoigratvasphalt8-prog.github.io/nasokteam/">
+<meta property="og:image" content="https://daytepoigratvasphalt8-prog.github.io/nasokteam/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%236E4A2E'/%3E%3Crect width='16' height='5' fill='%235E9E36'/%3E%3Crect x='3' y='5' width='2' height='2' fill='%235E9E36'/%3E%3Crect x='10' y='5' width='2' height='1' fill='%235E9E36'/%3E%3Cpath fill='%23F4EFE6' d='M3 6h2v7H3zM5 7h1v2H5zM6 8h1v2H6zM7 9h1v2H7zM8 10h1v2H8zM9 11h1v1H9zM10 6h2v7h-2z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #BFE3F2;
+  --sky-deep: #9FD2EA;
+  --grass: #5E9E36;
+  --grass-dark: #4A8229;
+  --dirt: #6E4A2E;
+  --stone: #5F6164;
+  --deepslate: #34353B;
+  --bedrock: #1D1C20;
+  --diamond: #5CE6DC;
+  --diamond-ink: #0E3431;
+  --paper: #F4EFE6;
+  --ink: #1F2A1A;
+
+  --pixel: "Pixelify Sans", "Courier New", monospace;
+  --text: "Golos Text", "Segoe UI", system-ui, sans-serif;
+
+  --step-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='32' shape-rendering='crispEdges'%3E%3Cpath d='M0 32V16h16V8h24v8h16v8h16V16h24V8h16v16h16v-8h16V8h16v24z'/%3E%3C/svg%3E");
+  --drip-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='32' shape-rendering='crispEdges'%3E%3Cpath d='M0 32V8h16v8h8V8h32v16h8V8h24v8h16V8h24v16h8v-8h8V8h16v24z'/%3E%3C/svg%3E");
+  --speckle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' shape-rendering='crispEdges'%3E%3Cg fill='%23000' fill-opacity='.08'%3E%3Crect x='4' y='8' width='8' height='4'/%3E%3Crect x='36' y='4' width='4' height='8'/%3E%3Crect x='20' y='28' width='8' height='8'/%3E%3Crect x='48' y='40' width='8' height='4'/%3E%3Crect x='8' y='52' width='4' height='4'/%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.03'%3E%3Crect x='28' y='16' width='4' height='4'/%3E%3Crect x='52' y='20' width='8' height='4'/%3E%3Crect x='12' y='36' width='4' height='8'/%3E%3Crect x='36' y='52' width='8' height='4'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  font-family: var(--text);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--paper);
+  background: var(--bedrock);
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg { display: block; }
+a { color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--diamond);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 50;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+}
+.skip:focus { top: 16px; }
+
+.wrap {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Layers (scroll = digging down) ---------- */
+
+.layer { position: relative; }
+
+.layer-sky {
+  background: linear-gradient(var(--sky-deep), var(--sky) 70%);
+  color: var(--ink);
+}
+.layer-dirt {
+  background: var(--dirt) var(--speckle);
+}
+.layer-stone {
+  background: var(--stone) var(--speckle);
+}
+.layer-deepslate {
+  background: var(--deepslate) var(--speckle);
+}
+.layer-bedrock {
+  background: var(--bedrock) var(--speckle);
+}
+
+.layer-body {
+  padding-top: clamp(56px, 8vw, 104px);
+  padding-bottom: clamp(56px, 8vw, 104px);
+}
+
+/* Stepped block edge between two layers: background = upper, ::after = lower */
+.edge {
+  position: relative;
+  height: 32px;
+  background: var(--from);
+}
+.edge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--to);
+  -webkit-mask: var(--step-edge) repeat-x left bottom / 160px 32px;
+          mask: var(--step-edge) repeat-x left bottom / 160px 32px;
+}
+.edge-drip::after {
+  -webkit-mask-image: var(--drip-edge);
+          mask-image: var(--drip-edge);
+}
+.edge-shift::after {
+  -webkit-mask-position: 72px bottom;
+          mask-position: 72px bottom;
+}
+
+.edge-sky-grass { --from: var(--sky); --to: var(--grass); }
+.edge-grass-dirt { --from: var(--grass); --to: var(--dirt); }
+.edge-dirt-stone { --from: var(--dirt); --to: var(--stone); }
+.edge-stone-deep { --from: var(--stone); --to: var(--deepslate); }
+.edge-deep-bedrock { --from: var(--deepslate); --to: var(--bedrock); }
+
+/* ---------- Header / hero ---------- */
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.top-mark {
+  font-family: var(--pixel);
+  font-weight: 700;
+  font-size: 20px;
+  text-decoration: none;
+}
+.top-nav {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.top-nav::-webkit-scrollbar { display: none; }
+.top-nav a {
+  padding: 8px 12px;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.top-nav a:hover { background: rgba(31, 42, 26, .08); }
+
+.hero {
+  padding-top: clamp(48px, 9vw, 120px);
+  padding-bottom: clamp(56px, 8vw, 96px);
+}
+.hero-title {
+  margin: 0;
+  font-family: var(--pixel);
+  font-weight: 700;
+  font-size: clamp(64px, 15vw, 200px);
+  line-height: .9;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  text-shadow: .06em .06em 0 rgba(31, 42, 26, .16);
+}
+.hero-title span { display: inline-block; }
+
+.hero-lead {
+  max-width: 34ch;
+  margin: 28px 0 0;
+  font-size: clamp(20px, 2.3vw, 26px);
+  line-height: 1.4;
+  font-weight: 500;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 36px;
+}
+.hero-news {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 40px;
+  padding: 8px 14px 8px 8px;
+  background: rgba(255, 255, 255, .55);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.hero-news:hover { background: rgba(255, 255, 255, .8); }
+
+/* Hero letters placed one by one, like blocks */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-title span {
+    animation: place .32s steps(3, end) both;
+    animation-delay: calc(var(--i) * 70ms + 120ms);
+  }
+  @keyframes place {
+    from { transform: translateY(-.35em); opacity: 0; }
+    to   { transform: none; opacity: 1; }
+  }
+}
+
+/* ---------- Shared bits ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 12px 22px 14px;
+  font-family: var(--text);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--diamond);
+  color: var(--diamond-ink);
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, .45), inset 0 -4px 0 rgba(0, 0, 0, .28);
+}
+.btn-primary:hover { background: #7DF0E8; }
+.btn-primary:active { box-shadow: inset 0 4px 0 rgba(0, 0, 0, .28); padding-top: 14px; padding-bottom: 12px; }
+.btn-ghost {
+  background: transparent;
+  color: inherit;
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+.btn-ghost:hover { background: rgba(255, 255, 255, .1); }
+.layer-sky .btn-ghost:hover { background: rgba(31, 42, 26, .07); }
+
+.status {
+  display: inline-block;
+  padding: 3px 10px 4px;
+  font-family: var(--pixel);
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.3;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.status-live { background: var(--diamond); color: var(--diamond-ink); }
+.status-dev { box-shadow: inset 0 0 0 2px currentColor; opacity: .85; }
+
+.h2 {
+  margin: 0;
+  font-family: var(--pixel);
+  font-weight: 700;
+  font-size: clamp(40px, 6.4vw, 76px);
+  line-height: 1;
+}
+.h3 {
+  margin: 0;
+  font-family: var(--pixel);
+  font-weight: 700;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.05;
+}
+.lead {
+  max-width: 36ch;
+  margin: 20px 0 0;
+  font-size: clamp(19px, 2vw, 22px);
+  line-height: 1.45;
+}
+.copy {
+  max-width: 44ch;
+  margin: 14px 0 0;
+}
+.muted { opacity: .78; }
+
+.title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+}
+
+/* ---------- Launcher (dirt) ---------- */
+
+.launcher {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px 72px;
+  align-items: start;
+}
+.launcher-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+.features {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.features li {
+  padding: 18px 0 18px 32px;
+  position: relative;
+  border-top: 2px solid rgba(244, 239, 230, .14);
+}
+.features li:last-child { border-bottom: 2px solid rgba(244, 239, 230, .14); }
+.features li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 26px;
+  width: 12px;
+  height: 12px;
+  background: var(--grass);
+  box-shadow: inset 0 -4px 0 var(--grass-dark);
+}
+.features b {
+  display: block;
+  font-weight: 600;
+  font-size: 19px;
+}
+.features span { display: block; margin-top: 2px; opacity: .8; }
+
+.next {
+  margin-top: 28px;
+  padding: 18px 20px;
+  background: rgba(0, 0, 0, .18);
+}
+.next-title {
+  margin: 0;
+  font-family: var(--pixel);
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--diamond);
+}
+.next p:last-child { margin: 6px 0 0; }
+
+/* ---------- Server + installer (stone) ---------- */
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px 72px;
+}
+.pair-item { display: flex; flex-direction: column; align-items: flex-start; }
+.pair-item .btn { margin-top: 28px; }
+.pair-facts {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pair-facts li {
+  padding: 4px 10px;
+  background: rgba(0, 0, 0, .2);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* ---------- Mods & sites (deepslate) ---------- */
+
+.section-head { margin-bottom: 40px; }
+
+.works { border-top: 2px solid rgba(244, 239, 230, .14); }
+.work {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr) 220px;
+  gap: 16px 40px;
+  align-items: start;
+  padding: 32px 0;
+  border-bottom: 2px solid rgba(244, 239, 230, .14);
+}
+.work-name { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.work-kind { margin: 10px 0 0; font-size: 16px; opacity: .7; }
+.work-text { margin: 4px 0 0; max-width: 46ch; }
+.work-action { padding-top: 2px; }
+.work-action .btn { width: 100%; }
+
+/* Pixel clouds in the sky */
+.cloud {
+  position: absolute;
+  z-index: 0;
+  fill: #fff;
+  opacity: .75;
+  pointer-events: none;
+}
+.cloud-a { width: 264px; top: 440px; right: 7%; }
+.cloud-b { width: 168px; top: 600px; right: 27%; opacity: .55; }
+.top, .hero { position: relative; z-index: 1; }
+
+/* ---------- Bedrock: orders + telegram ---------- */
+
+.bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 56px 72px;
+}
+.example {
+  margin-top: 24px;
+  padding-left: 18px;
+  box-shadow: inset 4px 0 0 var(--diamond);
+  max-width: 46ch;
+}
+.example p { margin: 0; }
+.bottom-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+.tg {
+  padding: 32px;
+  background: var(--deepslate);
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, .06), inset 0 -4px 0 rgba(0, 0, 0, .35);
+  align-self: start;
+}
+.tg .btn { margin-top: 24px; width: 100%; }
+.tg-handle {
+  margin: 14px 0 0;
+  font-family: var(--pixel);
+  font-size: 22px;
+  color: var(--diamond);
+  word-break: break-all;
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 32px;
+  margin-top: clamp(64px, 9vw, 112px);
+  padding-top: 24px;
+  padding-bottom: 96px;
+  border-top: 2px solid rgba(244, 239, 230, .1);
+  font-size: 15px;
+  opacity: .6;
+}
+.foot p { margin: 0; }
+
+/* ---------- Depth HUD (F3-style) ---------- */
+
+.hud {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 40;
+  padding: 8px 12px 9px;
+  background: rgba(20, 20, 22, .62);
+  color: #fff;
+  font-family: var(--pixel);
+  font-size: 15px;
+  line-height: 1.35;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+}
+.hud-y { font-variant-numeric: tabular-nums; }
+.hud-layer { opacity: .75; }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1080px) {
+  .cloud { display: none; }
+}
+@media (max-width: 880px) {
+  .launcher, .pair, .bottom { grid-template-columns: minmax(0, 1fr); }
+  .work-action .btn { width: auto; }
+  .work { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .work-action { padding-top: 8px; }
+}
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+  .wrap { padding: 0 18px; }
+  .top-nav a:not(.top-nav-tg) { display: none; }
+  .btn { width: 100%; }
+  .hero-actions .btn, .launcher-actions .btn, .bottom-actions .btn, .work-action .btn { width: 100%; }
+  .tg { padding: 24px; }
+  .hud { right: 10px; bottom: 10px; font-size: 13px; padding: 6px 9px 7px; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#launcher">К проектам</a>
+
+<!-- Поверхность -->
+<header class="layer layer-sky" data-layer="Поверхность">
+  <svg class="cloud cloud-a" viewBox="0 0 24 8" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 3h3V1h4V0h7v2h3v2h3v4H0V5h4z"/></svg>
+  <svg class="cloud cloud-b" viewBox="0 0 24 8" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 3h5V0h9v2h5v2h3v4H0V5h2z"/></svg>
+  <div class="wrap top">
+    <a class="top-mark" href="#">NasokTeam</a>
+    <nav class="top-nav" aria-label="Разделы">
+      <a href="#launcher">Лаунчер</a>
+      <a href="#server">Сервер</a>
+      <a href="#works">Моды и сайты</a>
+      <a href="#orders">Заказы</a>
+      <a class="top-nav-tg" href="https://t.me/NasokTeamHab" data-link="telegram">Telegram</a>
+    </nav>
+  </div>
+
+  <div class="wrap hero">
+    <h1 class="hero-title" aria-label="NasokTeam"><span style="--i:0" aria-hidden="true">N</span><span style="--i:1" aria-hidden="true">a</span><span style="--i:2" aria-hidden="true">s</span><span style="--i:3" aria-hidden="true">o</span><span style="--i:4" aria-hidden="true">k</span><span style="--i:5" aria-hidden="true">T</span><span style="--i:6" aria-hidden="true">e</span><span style="--i:7" aria-hidden="true">a</span><span style="--i:8" aria-hidden="true">m</span></h1>
+    <p class="hero-lead">Делаем свой лаунчер, программу для сервера на своём ПК, моды и плагины для Minecraft.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://t.me/NasokTeamHab" data-link="launcher">Скачать Nasok Launcher</a>
+      <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Наш Telegram-канал</a>
+    </div>
+    <a class="hero-news" href="#launcher"><span class="status status-live">2.2</span>Вышла новая версия лаунчера</a>
+  </div>
+</header>
+
+<div class="edge edge-sky-grass" aria-hidden="true"></div>
+<div class="edge edge-grass-dirt edge-drip" aria-hidden="true"></div>
+
+<main>
+
+<!-- Земля: лаунчер -->
+<section class="layer layer-dirt" id="launcher" data-layer="Земля" aria-labelledby="launcher-title">
+  <div class="wrap layer-body launcher">
+    <div>
+      <div class="title-row">
+        <h2 class="h2" id="launcher-title">Nasok Launcher</h2>
+        <span class="status status-live">Версия 2.2</span>
+      </div>
+      <p class="lead">Лаунчер Minecraft для Windows. Собирай свои сборки, ставь любые версии и заходи в игру по нику.</p>
+      <div class="launcher-actions">
+        <a class="btn btn-primary" href="https://t.me/NasokTeamHab" data-link="launcher">Скачать в Telegram</a>
+      </div>
+      <div class="next">
+        <p class="next-title">В следующем обновлении</p>
+        <p>Оптимизация в один клик и свои скины в офлайне через CustomSkinLoader.</p>
+      </div>
+    </div>
+
+    <ul class="features">
+      <li><b>Сборки прямо в главном окне</b><span>Создавай, настраивай и запускай сборки, не открывая кучу отдельных окон.</span></li>
+      <li><b>Несколько стилей интерфейса</b><span>Классический стоит по умолчанию, остальные переключаются в настройках.</span></li>
+      <li><b>Вход по нику</b><span>Играй с офлайн-аккаунтом, аккаунт Microsoft не нужен.</span></li>
+      <li><b>Windows 10 и 11</b><span>Работает на .NET 6.</span></li>
+    </ul>
+  </div>
+</section>
+
+<div class="edge edge-dirt-stone edge-shift" aria-hidden="true"></div>
+
+<!-- Камень: сервер и установщик -->
+<section class="layer layer-stone" id="server" data-layer="Камень" aria-label="Nasok Server и Nasok Installer">
+  <div class="wrap layer-body pair">
+    <article class="pair-item">
+      <div class="title-row">
+        <h2 class="h3">Nasok Server</h2>
+        <span class="status status-dev">В разработке</span>
+      </div>
+      <p class="copy">Свой сервер Minecraft прямо на твоём компьютере. Без хостинга, домена и VPS, полностью бесплатно. Друзья подключаются по IP.</p>
+      <ul class="pair-facts" aria-label="Коротко">
+        <li>Бесплатно</li>
+        <li>Запуск на своём ПК</li>
+        <li>Вход по IP</li>
+      </ul>
+      <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Узнать о выходе в Telegram</a>
+    </article>
+
+    <article class="pair-item">
+      <div class="title-row">
+        <h2 class="h3">Nasok Installer</h2>
+        <span class="status status-dev">В разработке</span>
+      </div>
+      <p class="copy">Один установщик для всех наших программ. Выбираешь, что поставить — Nasok Launcher или Nasok Server, — и он сам всё скачает.</p>
+      <ul class="pair-facts" aria-label="Коротко">
+        <li>Лаунчер или сервер на выбор</li>
+        <li>.NET 6</li>
+      </ul>
+      <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Узнать о выходе в Telegram</a>
+    </article>
+  </div>
+</section>
+
+<div class="edge edge-stone-deep" aria-hidden="true"></div>
+
+<!-- Глубинный сланец: моды и сайты -->
+<section class="layer layer-deepslate" id="works" data-layer="Глубинный сланец" aria-labelledby="works-title">
+  <div class="wrap layer-body">
+    <div class="section-head">
+      <h2 class="h2" id="works-title">Моды и сайты</h2>
+      <p class="lead">Делаем не только программы.</p>
+    </div>
+
+    <div class="works">
+      <article class="work">
+        <div class="work-name">
+          <h3 class="h3">ShahedMod</h3>
+          <span class="status status-dev">В разработке</span>
+        </div>
+        <div>
+          <p class="work-kind">Мод для Fabric 1.21.11</p>
+          <p class="work-text">Дроны, ракеты с наведением через камеру и взрывы. Дорабатываем реализм, анимации и прицеливание.</p>
+        </div>
+        <div class="work-action">
+          <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Следить в Telegram</a>
+        </div>
+      </article>
+
+      <article class="work">
+        <div class="work-name">
+          <h3 class="h3">CaseLab</h3>
+          <span class="status status-live">Работает</span>
+        </div>
+        <div>
+          <p class="work-kind">Сайт, симулятор кейсов CS2</p>
+          <p class="work-text">Открывай кейсы, делай апгрейды и контракты, устраивай баттлы с ботами и друзьями. Реальные скины, цены в рублях, баланс сохраняется.</p>
+        </div>
+        <div class="work-action">
+          <a class="btn btn-primary" href="https://daytepoigratvasphalt8-prog.github.io/caselab/" data-link="caselab">Открыть CaseLab</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="edge edge-deep-bedrock edge-shift" aria-hidden="true"></div>
+
+<!-- Бедрок: заказы и Telegram -->
+<section class="layer layer-bedrock" id="orders" data-layer="Бедрок" aria-labelledby="orders-title">
+  <div class="wrap layer-body bottom">
+    <div>
+      <h2 class="h2" id="orders-title">Плагины и сервера на заказ</h2>
+      <p class="lead">Напишем плагин под твой сервер или настроим сервер с нуля.</p>
+      <p class="copy muted">Paper и Spigot, миры Multiverse, мини-игры, настройка и правки готовых плагинов. Заказы принимаем на FunPay.</p>
+      <div class="example">
+        <p><b>Из последнего — Pillars Multiverse Edition.</b> Мини-игра для Paper 1.20+, где каждый матч идёт в свежей копии карты, а после игры мир удаляется.</p>
+      </div>
+      <div class="bottom-actions">
+        <a class="btn btn-primary" href="https://funpay.com/" data-link="funpay" hidden>Заказать на FunPay</a>
+        <a class="btn btn-ghost" href="https://t.me/NasokTeamHab" data-link="telegram">Связаться через Telegram</a>
+      </div>
+    </div>
+
+    <aside class="tg" aria-labelledby="tg-title">
+      <h2 class="h3" id="tg-title">Telegram-канал</h2>
+      <p class="copy">Релизы, обновления и анонсы выходят там первыми. Файлы для скачивания тоже там.</p>
+      <p class="tg-handle">@NasokTeamHab</p>
+      <a class="btn btn-primary" href="https://t.me/NasokTeamHab" data-link="telegram">Подписаться</a>
+    </aside>
+  </div>
+
+  <footer class="wrap foot">
+    <p>© <span id="year">2026</span> NasokTeam. Дальше не копается.</p>
+    <p>Minecraft — товарный знак Mojang Studios. Мы не связаны с Mojang и Microsoft.</p>
+  </footer>
+</section>
+
+</main>
+
+<div class="hud" aria-hidden="true">
+  <div class="hud-y">Y: <span id="hud-y">64</span></div>
+  <div class="hud-layer" id="hud-layer">Поверхность</div>
+</div>
+
+<script>
+/* ===== Ссылки сайта: меняй здесь =====
+   telegram — канал команды
+   launcher — где скачать Nasok Launcher (сейчас ведёт в канал)
+   caselab  — сайт CaseLab
+   funpay   — ссылка на ваш профиль/лоты FunPay (пусто = кнопка скрыта) */
+const LINKS = {
+  telegram: "https://t.me/NasokTeamHab",
+  launcher: "https://t.me/NasokTeamHab",
+  caselab: "https://daytepoigratvasphalt8-prog.github.io/caselab/",
+  funpay: ""
+};
+
+document.querySelectorAll("[data-link]").forEach(function (a) {
+  var url = LINKS[a.dataset.link];
+  if (url) {
+    a.href = url;
+    a.hidden = false;
+    if (/^https?:/.test(url)) { a.target = "_blank"; a.rel = "noopener"; }
+  } else {
+    a.hidden = true;
+  }
+});
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* Глубина: скролл от поверхности (Y 64) до бедрока (Y -59) */
+(function () {
+  var yEl = document.getElementById("hud-y");
+  var layerEl = document.getElementById("hud-layer");
+  var layers = Array.prototype.slice.call(document.querySelectorAll("[data-layer]"));
+  var TOP = 64, BOTTOM = -59, ticking = false;
+
+  function update() {
+    ticking = false;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    yEl.textContent = Math.round(TOP + (BOTTOM - TOP) * p);
+
+    var mid = window.innerHeight * 0.5, current = layers[0];
+    for (var i = 0; i < layers.length; i++) {
+      if (layers[i].getBoundingClientRect().top <= mid) current = layers[i];
+    }
+    layerEl.textContent = current.dataset.layer;
+  }
+
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener("resize", update);
+  update();
+})();
+</script>
+</body>
+</html>
